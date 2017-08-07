@@ -20,6 +20,12 @@ Techincal Aspects :-
 
 We need to use real time database for this app . Because while playing the game , the state will be constantly changing and it should be proccessed in real time.
 
+All the simultaneous cases like
+1. Simultaneous game requests to same user from different users.
+2. The game requests sent by same user are accepted by different users .
+and all other simultaneous cases are also handled.
+
+
 Technologies :-
 
 FireBase ---- Real time database used.
@@ -27,3 +33,5 @@ FireBase ---- Real time database used.
 JavaScript ---- For checking validations of chess moves JavaScript is used.
 
 Angular Js ---- Backend i.e entire database part and requests to database etc is written using Angular Js.
+
+
