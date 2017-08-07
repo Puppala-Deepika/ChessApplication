@@ -1,0 +1,1486 @@
+
+<html ng-app="userDetailApp">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Chess Game</title>
+        
+        <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+
+        <!-- Loading Bootstrap -->
+        <link href="dist/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Loading Flat UI -->
+        <link href="dist/css/flat-ui.css" rel="stylesheet">
+        <link href="docs/assets/css/demo.css" rel="stylesheet">
+
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    
+        <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+        <script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
+    
+        <link rel="stylesheet" type="text/css" href="bower_components/sweetalert/dist/sweetalert.css">
+        <script type="application/javascript" src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+        <script type="application/javascript" src="bower_components/angular-sweetalert/dist/ngSweetAlert.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="create_user.js"></script>
+        
+        <style>
+			body {
+    			background-color:#FFF8DC;
+			}
+
+			.menu {
+			    position: fixed;
+			    top: 0px;
+			    left: 0px;
+			    width: 25%;
+			    height: 50px;
+			    color:#fff;
+			    background:#78300B;
+			    z-index: 100;
+			    -webkit-touch-callout: none;
+			    -webkit-user-select: none;
+			    -moz-user-select: none;
+			    -ms-user-select: none;
+			}
+
+			.back {
+			    position: absolute;
+			    width: 25%;
+			    height: 50px;
+			    left: 0px;
+			    color: #fff;
+			    line-height: 50px;
+			    font-size: 30px;
+    			padding-left: 10px;
+			    cursor: pointer;
+			}
+
+			.back img {
+			    position: absolute;
+			    left: 0px;
+			    width: 40px;
+			    height: 40px;
+			    border-radius: 100%;
+			    -webkit-border-radius: 100%;
+			    -moz-border-radius: 100%;
+			    -ms-border-radius: 100%;
+			    margin-left: 15px;
+		    }
+
+			.name{
+			    position: relative;
+			    top: 3px;
+			    left: 65px;
+			    font-family: 'Lato';
+			    font-size: 25px;
+			    font-weight: 400;
+			    color: #fff;
+			    cursor: default;
+			}
+
+			.chat {
+			    position:relative;
+			    top: 65px;
+			    height: 80%;
+			    bottom: 65px;
+			    list-style: none;
+			    margin: 0;
+			    padding: 0 0 50px 0;
+			    width : 100%;
+				overflow-y: auto;
+			}
+
+			.cht{
+				top: 20%;
+				bottom: 20%;
+			}
+
+			.chat li {
+			    padding: 0.5rem;
+			    overflow: hidden;
+			    display: flex;
+			}
+
+			.chat .avatar {
+			    width: 40px;
+			    height: 40px;
+			    position: relative;
+			    display: block;
+			    z-index: 2;
+			    border-radius: 100%;
+			    -webkit-border-radius: 100%;
+			    -moz-border-radius: 100%;
+			    -ms-border-radius: 100%;
+			    background-color: rgba(255,255,255,0.9);
+			}
+
+			.chat .avatar img {
+    			width: 40px;
+    			height: 40px;
+    			border-radius: 100%;
+    		    -webkit-border-radius: 100%;
+    		    -moz-border-radius: 100%;
+    		    -ms-border-radius: 100%;
+			    background-color: rgba(255,255,255,0.9);
+			    -webkit-touch-callout: none;
+			    -webkit-user-select: none;
+			    -moz-user-select: none;
+			    -ms-user-select: none;
+			}
+
+			.chat .day {
+			    position: relative;
+			    display: block;
+			    text-align: center;
+			    color: #c0c0c0;
+			    height: 20px;
+			    text-shadow: 7px 0px 0px #e5e5e5, 6px 0px 0px #e5e5e5, 5px 0px 0px #e5e5e5, 4px 0px 0px #e5e5e5, 3px 0px 0px #e5e5e5, 2px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 0px 0px 0px #e5e5e5, -1px 0px 0px #e5e5e5, -2px 0px 0px #e5e5e5, -3px 0px 0px #e5e5e5, -4px 0px 0px #e5e5e5, -5px 0px 0px #e5e5e5, -6px 0px 0px #e5e5e5, -7px 0px 0px #e5e5e5;
+    			box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5, inset 0px -2px 0px #d7d7d7;
+    			line-height: 38px;
+    			margin-top: 5px;
+    			margin-bottom: 20px;
+    			cursor: default;			
+    			-webkit-touch-callout: none;
+			    -webkit-user-select: none;
+			    -moz-user-select: none;
+			    -ms-user-select: none;
+			}
+
+			.msg {
+			    background: white;
+			    min-width: 50px;
+			    padding: 10px;
+			    border-radius: 2px;
+			    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
+			}
+
+			.msg p {
+			    font-size: 0.8rem;
+			    margin: 0 0 0.2rem 0;
+			    color: #777;
+			    word-wrap:break-word;
+			}
+
+			.msg img {
+			    position: relative;
+			    display: block;
+			    width: 450px;
+			    border-radius: 5px;
+			    box-shadow: 0px 0px 3px #eee;
+			    transition: all .4s cubic-bezier(0.565, -0.260, 0.255, 1.410);
+			    cursor: default;
+			    -webkit-touch-callout: none;
+			    -webkit-user-select: none;
+			    -moz-user-select: none;
+			    -ms-user-select: none;
+			}
+
+			@media screen and (max-width: 800px) {
+			 	   .msg img {
+					    width: 300px;
+					}
+			}
+
+			@media screen and (max-width: 550px) {
+			    .msg img {
+				    width: 200px;
+				}
+			}
+
+			.msg time {
+			    font-size: 0.7rem;
+			    color: #ccc;
+			    margin-top: 3px;
+			    float: right;
+			    cursor: default;
+			    -webkit-touch-callout: none;	
+			    -webkit-user-select: none;
+			    -moz-user-select: none;
+			    -ms-user-select: none;
+			}
+
+			.msg time:before{
+			    content:"\f017";
+			    color: #ddd;
+			    font-family: FontAwesome;
+			    display: inline-block;
+			    margin-right: 4px;
+			}
+
+			emoji{
+			    display: inline-block;
+			    height: 18px;
+			    width: 18px;
+			    background-size: cover;
+			    background-repeat: no-repeat;
+			    margin-top: -7px;
+			    margin-right: 2px;
+			    transform: translate3d(0px, 3px, 0px);
+			}
+
+			.typetextarea {
+			    position: fixed;
+			    bottom: 0px;
+			    left: 0px;
+			    right: 0px;
+			    width: 25%;
+			    height: 50px;
+			    z-index: 99;
+			    background: #fafafa;
+			    border: none;
+			    outline: none;
+			    padding-left: 55px;
+			    padding-right: 55px;
+			    color: #666;
+			    font-weight: 400;
+			}
+
+			.emojis {
+			    position: fixed;
+			    display: block;
+			    bottom: 8px;
+			    left: 7px;
+			    width: 34px;
+			    height: 34px;
+			    background-image: url(http://i.imgur.com/5WUpcPZ.png);
+    			background-repeat: no-repeat;
+			    background-size: cover;
+			    z-index: 100;
+			    cursor: pointer;
+			}
+
+			.emojis:active {
+			    opacity: 0.9;
+			}
+
+			.other .msg {
+			    order: 1;
+			    border-top-left-radius: 0px;
+    			box-shadow: -1px 2px 0px #D4D4D4;
+			}
+
+			.other:before {
+			    content: "";
+			    position: relative;
+			    top: 0px;
+			    right: 0px;
+			    left: 40px;
+			    width: 0px;
+			    height: 0px;
+			    border: 5px solid #fff;
+			    border-left-color: transparent;
+			    border-bottom-color: transparent;
+			}
+
+			.self {
+			    justify-content: flex-end;
+			    align-items: flex-end;
+			}
+
+			.self .msg {
+			    order: 1;
+			    border-bottom-right-radius: 0px;
+			    box-shadow: 1px 2px 0px #D4D4D4;
+			}
+
+			.self .avatar {
+			    order: 2;
+			}
+
+			.self .avatar:after {
+			    content: "";
+    			position: relative;
+    			display: inline-block;
+    			bottom: 19px;
+    			right: 0px;
+    			width: 0px;
+    			height: 0px;
+    			border: 5px solid #fff;
+    			border-right-color: transparent;
+			    border-top-color: transparent;
+			    box-shadow: 0px 2px 0px #D4D4D4;
+			}
+</style>
+        <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    
+    <body ng-controller="gameCtrl"> 
+
+
+
+    <br>
+        <script>
+                var me = "white",other="black",selec="",tmp="B3";
+                var x = 1,z=0,turn=0;
+                var prev_me="",current_me="",prev="";
+                var req = [],re1=[];
+                var beat = [];
+                var pawn = 0;
+                var pawn_compensation = [];
+        </script>
+        
+        <!-- To store profile name -->
+        <input type='text' id='t0' ng-model="profileName" hidden="" />
+        
+        <!-- To store the previous position of recently moved coin -->
+        <input type='text' value='A3' id='t1' ng-model="widget.movesFrom" hidden="" />
+        
+        <!-- To store the new position of newly moved coin -->
+        <input type='text' value='A3' id='t2' ng-model="widget.movesTo" hidden="" />
+        
+        <!-- To store the current turn -->
+        <input type='text' value='white' id='t3' ng-model="widget.turn" hidden="" />
+        
+        <!-- To store if user is black/white -->
+        <input type='text' value='white' id='t4' ng-model="whiteOrblack" hidden="" />
+        <input type='text' id='t5' ng-model="winner" ng-click="winnerDeclared()" hidden="" />
+        <input type='text' id='t6' value=''ng-init="moveNo = '0'" ng-model="moveNo" hidden=""/>
+        <a id="t7" ng-click="winner()" hidden=""></a><a id="t8" ng-click="draw()" hidden=""></a>
+        
+        <!-- Chat -->
+        <div class="row">
+        	    <div class='col-sm-3' >
+        	        <div class="menu">
+        	        <!-- chat header -->
+        	    		<div class="back">
+        	    			<i class="fa fa-chevron-left"></i>
+        	    			<img ng-src="{{oppimgsrc}}"/>
+        	    		</div>
+        	    		<div class="name">{{oppname.substring(0, 14)}}
+        	    		</div>
+        		</div>
+    				<ol class="chat"style="">
+    				<!-- chat messages -->
+    					<li ng-repeat="message in messages" ng-class="message.colour === whiteOrblack ? 'self' : 'other' " >
+        					<div class="avatar"><img ng-src="{{message.src}}" draggable="false"/>
+        					</div>
+      						<div class="msg">
+        						<p style="font-size:2rem">{{message.string}}</p>
+        						<p style="font-size:1rem;float:right;">{{message.msgtime}}</p>
+      						</div>                            
+					</li>
+				</ol>
+				<!-- chat text area -->
+				<textarea class="typetextarea" type="text" placeholder="Type here!" ng-model="msgText"></textarea>
+				<a ng-click="pushmsg(msgText)" ><div class="emojis"></div></a>
+		  </div>
+        <div class='col-sm-6' align='center'>
+            <h8>Please donot reload the page.</h8><br>
+        
+        <!-- chess text area -->
+        <table id="chess_board" cellpadding="0" cellspacing="0">
+            
+<tr>
+    <td><a href="#">8</a></td>
+    <td id="A8"><a id="A80" onclick="javascript:ObserveInputValue();coin(this.id,'rook');" class="black">&#9820;</a></td>
+    <td id="B8"><a id="B80" onclick="javascript:ObserveInputValue();coin(this.id,'knight');" class="black">&#9822;</a></td>
+    <td id="C8"><a id="C80" onclick="javascript:ObserveInputValue();coin(this.id,'bishop');" class="black">&#9821;</a></td>
+    <td id="D8"><a id="D80" onclick="javascript:ObserveInputValue();coin(this.id,'queen');" class="black">&#9819;</a></td>
+    <td id="E8"><a id="E80" onclick="javascript:ObserveInputValue();coin(this.id,'king');" class="black">&#9818;</a></td>
+    <td id="F8"><a id="F80" onclick="javascript:ObserveInputValue();coin(this.id,'bishop');" class="black">&#9821;</a></td>
+    <td id="G8"><a id="G80" onclick="javascript:ObserveInputValue();coin(this.id,'knight');" class="black">&#9822;</a></td>
+    <td id="H8"><a id="H80" onclick="javascript:ObserveInputValue();coin(this.id,'rook');" class="black">&#9820;</a></td>
+</tr>
+<tr>
+    <td><a href="#">7</a></td>
+    <td id="A7"><a id="A70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+    <td id="B7"><a id="B70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+    <td id="C7"><a id="C70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+    <td id="D7"><a id="D70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+    <td id="E7"><a id="E70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+    <td id="F7"><a id="F70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+    <td id="G7"><a id="G70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+    <td id="H7"><a id="H70" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="black">&#9823;</a></td>
+</tr>
+<tr>
+    <td><a href="#">6</a></td>
+    <td id="A6"><a id="A60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="B6"><a id="B60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="C6"><a id="C60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="D6"><a id="D60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="E6"><a id="E60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="F6"><a id="F60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="G6"><a id="G60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="H6"><a id="H60" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+</tr>
+<tr>
+    <td><a href="#">5</a></td>
+    <td id="A5"><a id="A50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="B5"><a id="B50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="C5"><a id="C50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="D5"><a id="D50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="E5"><a id="E50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="F5"><a id="F50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="G5"><a id="G50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="H5"><a id="H50" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+</tr>
+<tr>
+    <td><a href="#">4</a></td>
+    <td id="A4"><a id="A40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="B4"><a id="B40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="C4"><a id="C40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="D4"><a id="D40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="E4"><a id="E40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="F4"><a id="F40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="G4"><a id="G40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="H4"><a id="H40" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+</tr>
+<tr>
+    <td><a href="#">3</a></td>
+    <td id="A3"><a id="A30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="B3"><a id="B30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="C3"><a id="C30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="D3"><a id="D30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="E3"><a id="E30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="F3"><a id="F30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="G3"><a id="G30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+    <td id="H3"><a id="H30" onclick="javascript:ObserveInputValue();empty(this.id);" class=""></a></td>
+</tr>
+<tr>
+    <td><a href="#">2</a></td>
+    <td id="A2"><a id="A20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+    <td id="B2"><a id="B20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+    <td id="C2"><a id="C20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+    <td id="D2"><a id="D20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+    <td id="E2"><a id="E20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+    <td id="F2"><a id="F20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+    <td id="G2"><a id="G20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+    <td id="H2"><a id="H20" onclick="javascript:ObserveInputValue();coin(this.id,'pawn');" class="white">&#9817;</a></td>
+</tr>
+<tr>
+    <td><a href="#">1</a></td>
+    <td id="A1"><a id="A10" onclick="javascript:ObserveInputValue();coin(this.id,'rook');"class="white">&#9814;</a></td>
+    <td id="B1"><a id="B10" onclick="javascript:ObserveInputValue();coin(this.id,'knight');" class="white">&#9816;</a></td>
+    <td id="C1"><a id="C10" onclick="javascript:ObserveInputValue();coin(this.id,'bishop');" class="white">&#9815;</a></td>
+    <td id="D1"><a id="D10" onclick="javascript:ObserveInputValue();coin(this.id,'queen');" class="white">&#9813;</a></td>
+    <td id="E1"><a id="E10" onclick="javascript:ObserveInputValue();coin(this.id,'king');" class="white">&#9812;</a></td>
+    <td id="F1"><a id="F10" onclick="javascript:ObserveInputValue();coin(this.id,'bishop');" class="white">&#9815;</a></td>
+    <td id="G1"><a id="G10" onclick="javascript:ObserveInputValue();coin(this.id,'knight');" class="white">&#9816;</a></td>
+    <td id="H1"><a id="H10" onclick="javascript:ObserveInputValue();coin(this.id,'rook');" class="white">&#9814;</a></td>
+</tr>
+<tr>
+    <td></td>
+    <td><a href="#">A</a></td>
+    <td><a href="#">B</a></td>
+    <td><a href="#">C</a></td>
+    <td><a href="#">D</a></td>
+    <td><a href="#">E</a></td>
+    <td><a href="#">F</a></td>
+    <td><a href="#">G</a></td>
+    <td><a href="#">H</a></td>
+</tr>
+            
+        </table>
+        <!-- Corresponding moves to be done in the backend when a coin is clicked -->
+        <a id="A11" ng-click="update('A1','1')" hidden=""></a><a id="A12" ng-click="update('A1','2')" hidden=""></a>
+        <a id="B11" ng-click="update('B1','1')" hidden=""></a><a id="B12" ng-click="update('B1','2')" hidden=""></a>
+        <a id="C11" ng-click="update('C1','1')" hidden=""></a><a id="C12" ng-click="update('C1','2')" hidden=""></a>
+        <a id="D11" ng-click="update('D1','1')" hidden=""></a><a id="D12" ng-click="update('D1','2')" hidden=""></a>
+        <a id="E11" ng-click="update('E1','1')" hidden=""></a><a id="E12" ng-click="update('E1','2')" hidden=""></a>
+        <a id="F11" ng-click="update('F1','1')" hidden=""></a><a id="F12" ng-click="update('F1','2')" hidden=""></a>
+        <a id="G11" ng-click="update('G1','1')" hidden=""></a><a id="G12" ng-click="update('G1','2')" hidden=""></a>
+        <a id="H11" ng-click="update('H1','1')" hidden=""></a><a id="H12" ng-click="update('H1','2')" hidden=""></a>
+        
+        <a id="A21" ng-click="update('A2','1')" hidden=""></a><a id="A22" ng-click="update('A2','2')" hidden=""></a>
+        <a id="B21" ng-click="update('B2','1')" hidden=""></a><a id="B22" ng-click="update('B2','2')" hidden=""></a>
+        <a id="C21" ng-click="update('C2','1')" hidden=""></a><a id="C22" ng-click="update('C2','2')" hidden=""></a>
+        <a id="D21" ng-click="update('D2','1')" hidden=""></a><a id="D22" ng-click="update('D2','2')" hidden=""></a>
+        <a id="E21" ng-click="update('E2','1')" hidden=""></a><a id="E22" ng-click="update('E2','2')" hidden=""></a>
+        <a id="F21" ng-click="update('F2','1')" hidden=""></a><a id="F22" ng-click="update('F2','2')" hidden=""></a>
+        <a id="G21" ng-click="update('G2','1')" hidden=""></a><a id="G22" ng-click="update('G2','2')" hidden=""></a>
+        <a id="H21" ng-click="update('H2','1')" hidden=""></a><a id="H22" ng-click="update('H2','2')" hidden=""></a>
+        
+        <a id="A31" ng-click="update('A3','1')" hidden=""></a><a id="A32" ng-click="update('A3','2')" hidden=""></a>
+        <a id="B31" ng-click="update('B3','1')" hidden=""></a><a id="B32" ng-click="update('B3','2')" hidden=""></a>
+        <a id="C31" ng-click="update('C3','1')" hidden=""></a><a id="C32" ng-click="update('C3','2')" hidden=""></a>
+        <a id="D31" ng-click="update('D3','1')" hidden=""></a><a id="D32" ng-click="update('D3','2')" hidden=""></a>
+        <a id="E31" ng-click="update('E3','1')" hidden=""></a><a id="E32" ng-click="update('E3','2')" hidden=""></a>
+        <a id="F31" ng-click="update('F3','1')" hidden=""></a><a id="F32" ng-click="update('F3','2')" hidden=""></a>
+        <a id="G31" ng-click="update('G3','1')" hidden=""></a><a id="G32" ng-click="update('G3','2')" hidden=""></a>
+        <a id="H31" ng-click="update('H3','1')" hidden=""></a><a id="H32" ng-click="update('H3','2')" hidden=""></a>
+        
+        <a id="A41" ng-click="update('A4','1')" hidden=""></a><a id="A42" ng-click="update('A4','2')" hidden=""></a>
+        <a id="B41" ng-click="update('B4','1')" hidden=""></a><a id="B42" ng-click="update('B4','2')" hidden=""></a>
+        <a id="C41" ng-click="update('C4','1')" hidden=""></a><a id="C42" ng-click="update('C4','2')" hidden=""></a>
+        <a id="D41" ng-click="update('D4','1')" hidden=""></a><a id="D42" ng-click="update('D4','2')" hidden=""></a>
+        <a id="E41" ng-click="update('E4','1')" hidden=""></a><a id="E42" ng-click="update('E4','2')" hidden=""></a>
+        <a id="F41" ng-click="update('F4','1')" hidden=""></a><a id="F42" ng-click="update('F4','2')" hidden=""></a>
+        <a id="G41" ng-click="update('G4','1')" hidden=""></a><a id="G42" ng-click="update('G4','2')" hidden=""></a>
+        <a id="H41" ng-click="update('H4','1')" hidden=""></a><a id="H42" ng-click="update('H4','2')" hidden=""></a>
+        
+        <a id="A51" ng-click="update('A5','1')" hidden=""></a><a id="A52" ng-click="update('A5','2')" hidden=""></a>
+        <a id="B51" ng-click="update('B5','1')" hidden=""></a><a id="B52" ng-click="update('B5','2')" hidden=""></a>
+        <a id="C51" ng-click="update('C5','1')" hidden=""></a><a id="C52" ng-click="update('C5','2')" hidden=""></a>
+        <a id="D51" ng-click="update('D5','1')" hidden=""></a><a id="D52" ng-click="update('D5','2')" hidden=""></a>
+        <a id="E51" ng-click="update('E5','1')" hidden=""></a><a id="E52" ng-click="update('E5','2')" hidden=""></a>
+        <a id="F51" ng-click="update('F5','1')" hidden=""></a><a id="F52" ng-click="update('F5','2')" hidden=""></a>
+        <a id="G51" ng-click="update('G5','1')" hidden=""></a><a id="G52" ng-click="update('G5','2')" hidden=""></a>
+        <a id="H51" ng-click="update('H5','1')" hidden=""></a><a id="H52" ng-click="update('H5','2')" hidden=""></a>
+        
+        <a id="A61" ng-click="update('A6','1')" hidden=""></a><a id="A62" ng-click="update('A6','2')" hidden=""></a>
+        <a id="B61" ng-click="update('B6','1')" hidden=""></a><a id="B62" ng-click="update('B6','2')" hidden=""></a>
+        <a id="C61" ng-click="update('C6','1')" hidden=""></a><a id="C62" ng-click="update('C6','2')" hidden=""></a>
+        <a id="D61" ng-click="update('D6','1')" hidden=""></a><a id="D62" ng-click="update('D6','2')" hidden=""></a>
+        <a id="E61" ng-click="update('E6','1')" hidden=""></a><a id="E62" ng-click="update('E6','2')" hidden=""></a>
+        <a id="F61" ng-click="update('F6','1')" hidden=""></a><a id="F62" ng-click="update('F6','2')" hidden=""></a>
+        <a id="G61" ng-click="update('G6','1')" hidden=""></a><a id="G62" ng-click="update('G6','2')" hidden=""></a>
+        <a id="H61" ng-click="update('H6','1')" hidden=""></a><a id="H62" ng-click="update('H6','2')" hidden=""></a>
+        
+        <a id="A71" ng-click="update('A7','1')" hidden=""></a><a id="A72" ng-click="update('A7','2')" hidden=""></a>
+        <a id="B71" ng-click="update('B7','1')" hidden=""></a><a id="B72" ng-click="update('B7','2')" hidden=""></a>
+        <a id="C71" ng-click="update('C7','1')" hidden=""></a><a id="C72" ng-click="update('C7','2')" hidden=""></a>
+        <a id="D71" ng-click="update('D7','1')" hidden=""></a><a id="D72" ng-click="update('D7','2')" hidden=""></a>
+        <a id="E71" ng-click="update('E7','1')" hidden=""></a><a id="E72" ng-click="update('E7','2')" hidden=""></a>
+        <a id="F71" ng-click="update('F7','1')" hidden=""></a><a id="F72" ng-click="update('F7','2')" hidden=""></a>
+        <a id="G71" ng-click="update('G7','1')" hidden=""></a><a id="G72" ng-click="update('G7','2')" hidden=""></a>
+        <a id="H71" ng-click="update('H7','1')" hidden=""></a><a id="H72" ng-click="update('H7','2')" hidden=""></a>
+        
+        <a id="A81" ng-click="update('A8','1')" hidden=""></a><a id="A82" ng-click="update('A8','2')" hidden=""></a>
+        <a id="B81" ng-click="update('B8','1')" hidden=""></a><a id="B82" ng-click="update('B8','2')" hidden=""></a>
+        <a id="C81" ng-click="update('C8','1')" hidden=""></a><a id="C82" ng-click="update('C8','2')" hidden=""></a>
+        <a id="D81" ng-click="update('D8','1')" hidden=""></a><a id="D82" ng-click="update('D8','2')" hidden=""></a>
+        <a id="E81" ng-click="update('E8','1')" hidden=""></a><a id="E82" ng-click="update('E8','2')" hidden=""></a>
+        <a id="F81" ng-click="update('F8','1')" hidden=""></a><a id="F82" ng-click="update('F8','2')" hidden=""></a>
+        <a id="G81" ng-click="update('G8','1')" hidden=""></a><a id="G82" ng-click="update('G8','2')" hidden=""></a>
+        <a id="H81" ng-click="update('H8','1')" hidden=""></a><a id="H82" ng-click="update('H8','2')" hidden=""></a>
+            </div>
+            <div class='col-sm-3' align='center'>
+                <input type="button" value="Quit Game" ng-click="QuitGame()" style="">
+                <br><br>
+                <img id='bl' class='active_img' src='blknight.png' height=100px width=100px style='border-radius:50%;'/>
+                <br>
+                <h1 id='t11'></h1>
+                <script>function callme2()
+                {
+                if(document.getElementById('t4').value === 'black') 
+                document.getElementById('t11').innerHTML='you'; 
+                else 
+                document.getElementById('t11').innerHTML=document.getElementById('t0').value;
+                }</script>
+                <br>
+                <br>
+                <img id='wh' class='' src='wknight.png' height=100px width=100px style='border-radius:50%;'/>
+                <br>
+                <h1 id='t10'></h1>
+                <script>function callme1(){if(document.getElementById('t4').value === 'white') document.getElementById('t10').innerHTML='you'; else document.getElementById('t10').innerHTML=document.getElementById('t0').value;}</script>
+                <br>
+            </div>
+        </div>
+        <br>
+<script>
+    var changed_turn = document.getElementById('t3').value,changed_turn2 = document.getElementById('t3').value;	
+    setInterval(function() { ObserveInputValue(); }, 100);						//to get the latest move and changed turn and act accordingly
+    setInterval(function() {callme1();},5000);										//to display turn	and color
+    setInterval(function() {callme2();},5000);										//to display turn and color
+    me = document.getElementById('t4').value;
+        
+            function ObserveInputValue()
+            {
+                if(document.getElementById('t2').value.length>0 && document.getElementById('t3').value.length>0)
+                {
+                    if(document.getElementById('t3').value==='white')		//setting active for the image of user of current turn
+                        {
+                            document.getElementById('wh').className='active_img';
+                            document.getElementById('bl').className='';
+                        }
+                    else if(document.getElementById('t3').value==='black')
+                        {
+                            document.getElementById('wh').className='';
+                            document.getElementById('bl').className='active_img';
+                            
+                        }
+                    if(me === "white")
+                        other = "black";
+                    else
+                        other = "white";
+                    if(changed_turn !== document.getElementById('t2').value){		//Checking if turn is changed
+                        if(document.getElementById(document.getElementById('t2').value) !== null && document.getElementById(document.getElementById('t1').value) !== null && document.getElementById('t3').value === document.getElementById('t4').value)
+                    		{																				//if it is user's turn and last move is made
+                        	me = document.getElementById('t4').value;
+                        	var prev = document.getElementById(document.getElementById('t1').value);		//updating the last move made by opponent
+                        	var pres = document.getElementById(document.getElementById('t2').value);
+                        	var y = pres;
+                        	pres.firstChild.innerHTML="";
+                        	pres.firstChild.setAttribute("onclick",'javascript:empty(this.id);');
+                        	pres.firstChild.className="";
+                        	prev_me = prev.innerHTML;
+                        	current_me = y.innerHTML;
+                        	y.innerHTML = prev_me;
+                        	prev.innerHTML = current_me;
+                        	x=1;
+                        	req=[];																							//notes all the moves possible by user for given coin 
+                        	re1=[];																							//notes all the moves possible by coin
+                        	beat=[];																						//notes all the moves possible to beat the opponent coin
+                        	pawn_compensation=[];
+                        	changed_turn= document.getElementById('t2').value;
+                    		}
+                        
+                        changed_turn2 = document.getElementById('t3').value;
+                        }
+                    
+                }
+                else{
+                   // changed_turn = document.getElementById('t3').value;
+                }
+            }
+     
+            function move_one_up(w)																							//function called if coin can move 1 step up
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = parseInt(ids[1])+1;
+                ids2 = ids[0]+l;
+                var me_position = document.getElementById(ids2);													//checks if there is no other coin in that position
+                if(l <= 8 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                if(me === "white" && l === 8)
+                {
+                    pawn_compensation.push(me_position.firstChild.getAttribute('id'));
+                }
+            }
+            function move_one_down(w)																						//function called if coin can move 1 step down
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = parseInt(ids[1])-1;
+                ids2 = ids[0]+l;
+                var me_position = document.getElementById(ids2);													//checks if there is no other coin in that position
+                if(l >= 1 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                if(me === "black" && l === 1)
+                {
+                    pawn_compensation.push(me_position.firstChild.getAttribute('id'));
+                }
+            }
+            function move_two_up(w)																							//function called if coin can move 2 steps up
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = parseInt(ids[1])+2;
+                var l1 = l-1;
+                ids2 = ids[0]+l;
+                var me_position = document.getElementById(ids2);
+                var me_position2 = document.getElementById(ids[0]+l1);											//checks if there is no other coin in that position
+                if(l === 4 && me_position2.firstChild.className.indexOf("white")===-1 && me_position2.firstChild.className.indexOf("black")===-1&&me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function move_two_down(w)																						//function called if coin can move 2 steps down
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = parseInt(ids[1])-2;
+                var l1 = parseInt(ids[1])-1;
+                var me_position = document.getElementById(ids[0]+l);
+                var me_position2 = document.getElementById(ids[0]+l1);											//checks if there is no other coin in that position
+                if(l === 5 && me_position2.firstChild.className.indexOf("white")===-1 && me_position2.firstChild.className.indexOf("black")===-1&&me_position2.firstChild.className.indexOf("white")===-1&&me_position2.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function move_one_right(w)																						//function called if coin can move 1 step right
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l+1)+ids[1];
+                var me_position = document.getElementById(ids2);													//checks if there is no other coin in that position
+                if(l <= 71 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            
+            function move_one_left(w)																						//function called if coin can move 1 step left
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l-1)+ids[1];
+                var me_position = document.getElementById(ids2);													//checks if there is no other coin in that position
+                if(l > 65 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function move_one_up_cross(w)																					//function called if coin can move 1 step diagonally  
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l1 = parseInt(ids[1])+1;
+                var l2 = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l2-1)+l1;
+                ids3 = String.fromCharCode(l2+1)+l1;
+                var me_position = document.getElementById(ids2);													//checks if there is no other coin in that position
+                if(l1<=8 && l2>65 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(ids3);													//checks if there is no other coin in that position
+                if(l1<=8 && l2<72 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function move_one_down_cross(w)																			//function called if coin can move 1 step diagonally down
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l1 = parseInt(ids[1])-1;
+                var l2 = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l2-1)+l1;
+                ids3 = String.fromCharCode(l2+1)+l1;
+                var me_position = document.getElementById(ids2);													//checks if there is no other coin in that position
+                if(l1>=1 && l2>65 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(ids3);													//checks if there is no other coin in that position
+                if(l1>=1 && l2<72 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function beat_one_up(w)																				//function called if coin can beat 1 coin up
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = parseInt(ids[1])+1;
+                ids2 = ids[0]+l;
+                var me_position = document.getElementById(ids2);												//checks if coin in that position belong to opponent
+                if(me==="white" && l <= 8 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }																								//checks if coin in that position belong to opponent
+                else if(me==="black" && l <= 8 && me_position.firstChild.className.indexOf("white")!==-1 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function beat_one_down(w)																			//function called if coin can beat 1 coin down
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = parseInt(ids[1])-1;
+                ids2 = ids[0]+l;
+                var me_position = document.getElementById(ids2);												//checks if coin in that position belong to opponent
+                if(me==="white" && l >= 1 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }																									//checks if coin in that position belong to opponent
+                else if(me==="black" && l >= 1 && me_position.firstChild.className.indexOf("white")!==-1 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function beat_one_right(w)																					//function called if coin can beat 1 coin right
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l+1)+ids[1];
+                var me_position = document.getElementById(ids2);												//checks if coin in that position belong to opponent
+                if(me==="white" && l < 72 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }																											//checks if coin in that position belong to opponent
+                else if(me==="black" && l < 72 && me_position.firstChild.className.indexOf("white")!==-1 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function beat_one_left(w)																					//function called if coin can beat 1 coin left
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l-1)+ids[1];
+                var me_position = document.getElementById(ids2);
+                if(me==="white" && l > 65 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {																										//checks if coin in that position belong to opponent
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l > 65 && me_position.firstChild.className.indexOf("white")!==-1 && me_position.firstChild.className.indexOf("black")===-1)
+                {											
+                    beat.push(me_position.firstChild.getAttribute('id'));
+                    req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function beat_one_up_cross(w)																				//function called if coin can beat a coin 1 step diagonally up
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l1 = parseInt(ids[1])+1;
+                var l2 = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l2-1)+l1;
+                ids3 = String.fromCharCode(l2+1)+l1;
+                var me_position = document.getElementById(ids2);
+                if(me==="white" && l1<=8 && l2>65 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {																									//checks if coin belong to opponent
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(l1 === 8)
+                        {
+                            pawn_compensation.push(me_position.firstChild.getAttribute('id'));
+                        }
+                }
+                else if(me==="black" && l1<=8 && l2>65 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")!==-1)
+                {
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(ids3);
+                if(me==="white" && l1<=8 && l2<72 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {																									//checks if coin belongs to opponent
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(l1 === 8)
+                        {
+                            pawn_compensation.push(me_position.firstChild.getAttribute('id'));
+                        }
+                }
+                else if(me==="black" && l1<=8 && l2<72 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")!==-1)
+                {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function beat_one_down_cross(w)																				//function called if coin can beat a coin 1 step diagonally down
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l1 = parseInt(ids[1])-1;
+                var l2 = ids.charCodeAt(0);
+                ids2 = String.fromCharCode(l2-1)+l1;
+                ids3 = String.fromCharCode(l2+1)+l1;
+                var me_position = document.getElementById(ids2);
+                if(me==="white" && l1>=1 && l2>65 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l1>=1 && l2>65 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")!==-1)
+                {
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                        if(l1 === 8)
+                        {
+                            pawn_compensation.push(me_position.firstChild.getAttribute('id'));
+                        }
+                }
+                me_position = document.getElementById(ids3);
+                if(me==="white" && l1>=1 && l2<72 && me_position.firstChild.className.indexOf("black")!==-1 && me_position.firstChild.className.indexOf("white")===-1)
+                {
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l1>=1 && l2<72 && me_position.firstChild.className.indexOf("black")===-1 && me_position.firstChild.className.indexOf("white")!==-1)
+                {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                        if(l1 === 8)
+                        {
+                            pawn_compensation.push(me_position.firstChild.getAttribute('id'));
+                        }
+                }
+            }
+            function total_l(w)																				//function called by a knight-total 8 possible moves
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l0 = parseInt(ids[1]);
+                var l1 = l0+2,l2= l0+1,l3=l0-1,l4=l0-2;
+                var b0 = ids.charCodeAt(0);
+                b1 = String.fromCharCode(b0-2),b2=String.fromCharCode(b0-1),b3=String.fromCharCode(b0+1),b4=String.fromCharCode(b0+2);
+                var me_position = document.getElementById(b2+l1);
+                if(me==="white" && l1<=8 && b0>=66 && me_position.firstChild.className.indexOf("white")===-1)//possible move 1
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l1<=8 && b0>=66 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if(me_position.firstChild.className.indexOf("white")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(b3+l1);
+                if(me==="white" && l1<=8 && b0<=71 && me_position.firstChild.className.indexOf("white")===-1)//possible move 2
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l1<=8 && b0<=71 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if(me_position.firstChild.className.indexOf("white")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(b1+l2);
+                if(me==="white" && l2<=8 && b0>=67 && me_position.firstChild.className.indexOf("white")===-1)//possible move 3
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l2<=8 && b0>=67 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if(me_position.firstChild.className.indexOf("white")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(b4+l2);
+                if(me==="white" && l2<=8 && b0<=70 && me_position.firstChild.className.indexOf("white")===-1)//possible move 4
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1 )
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l2<=8 && b0<=70 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if( me_position.firstChild.className.indexOf("white")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(b1+l3);
+                if(me==="white" && l3>=1 && b0>=67 && me_position.firstChild.className.indexOf("white")===-1)//possible move 5
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l3>=1 && b0>=67 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if(me_position.firstChild.className.indexOf("white")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(b4+l3);
+                if(me==="white" && l3>=1 && b0<=70 && me_position.firstChild.className.indexOf("white")===-1)//possible move 6
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l3>=1 && b0<=70 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if(me_position.firstChild.className.indexOf("white")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(b2+l4);
+                if(me==="white" && l4>=1 && b0>=66 && me_position.firstChild.className.indexOf("white")===-1)//possible move 7
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1 )
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l4>=1 && b0>=66 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if(me_position.firstChild.className.indexOf("white")!==-1 )
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                me_position = document.getElementById(b3+l4);
+                if(me==="white" && l4>=1 && b0<=71 && me_position.firstChild.className.indexOf("white")===-1)//possible move 8
+                {
+                    if(me_position.firstChild.className.indexOf("black")!==-1 )
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+                else if(me==="black" && l4>=1 && b0<=71 && me_position.firstChild.className.indexOf("black")===-1)
+                {
+                    if(me_position.firstChild.className.indexOf("white")!==-1)
+                        beat.push(me_position.firstChild.getAttribute('id'));
+                        req.push(me_position.firstChild.getAttribute('id'));
+                    re1.push(me_position.getAttribute('id'));
+                }
+            }
+            function total_row(w)																					//function called if a coin can move to any position in the same row without collision
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l0 = parseInt(ids[1]);
+                for(var l1=l0+1;l1<=8;l1++)
+                {
+                    ids2 = ids[0]+l1;
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+                for(var l1=l0-1;l1>=1;l1--)
+                {
+                    ids2 = ids[0]+l1;
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+            }
+            function total_column(w)																			//function called if a coin can move to any position in the same column without collision
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l0 = ids.charCodeAt(0);
+                for(var l1=l0+1;l1<=72;l1++)
+                {
+                    ids2 = String.fromCharCode(l1)+ids[1];
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+                for(var l1=l0-1;l1>=65;l1--)
+                {
+                    ids2 = String.fromCharCode(l1)+ids[1];
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+            }
+            function total_cross_up(w)																		//function called if a coin can move to any position in a diagonal upwards without collision
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l0 = ids.charCodeAt(0);
+                var b0 = parseInt(ids[1]);
+                for(var l1=l0+1,b1=b0+1;l1<=72 && b1<=8;l1++,b1++)
+                {
+                    ids2 = String.fromCharCode(l1)+b1;
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+                for(var l1=l0-1,b1=b0+1;l1>=65 && b1<=8;l1--,b1++)
+                {
+                    ids2 = String.fromCharCode(l1)+b1;
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+            }
+            function total_cross_down(w)						//function called if a coin can move to any position in a diagonal downwards without collision
+            {
+                var par = document.getElementById(w).parentNode;
+                ids = par.getAttribute('id');
+                var l0 = ids.charCodeAt(0);
+                var b0 = parseInt(ids[1]);
+                for(var l1=l0+1,b1=b0-1;l1<=72 && b1>=1;l1++,b1--)
+                {
+                    ids2 = String.fromCharCode(l1)+b1;
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+                for(var l1=l0-1,b1=b0-1;l1>=65 && b1>=1;l1--,b1--)
+                {
+                    ids2 = String.fromCharCode(l1)+b1;
+                    var me_position = document.getElementById(ids2);
+                    if(me==="white" && me_position.firstChild.className.indexOf("white")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("black")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")===-1)
+                    {
+                        req.push(me_position.firstChild.getAttribute('id'));
+                        re1.push(me_position.getAttribute('id'));
+                        if(me_position.firstChild.className.indexOf("white")!==-1)
+                        {
+                            beat.push(me_position.firstChild.getAttribute('id'));
+                            break;
+                        }
+                    }
+                    else if(me==="white" && me_position.firstChild.className.indexOf("white")!==-1)
+                    {
+                        break;
+                    }
+                    else if(me==="black" && me_position.firstChild.className.indexOf("black")!==-1)
+                    {
+                        break;
+                    }
+                }
+            }
+            function empty(w)																	//function called when an empty square is clicked
+            {
+                if(x === 2)
+                {
+                    var new_val = document.getElementById(w).parentNode.getAttribute('id');
+                    if(req.indexOf(w) !== -1)
+                    {
+                        var y = document.getElementById(w).parentNode;
+                        current_me = y.innerHTML;
+                        y.innerHTML = prev_me;
+                        prev.innerHTML = current_me;
+                        x=1;
+                        for(var i=0;i<req.length;i++)
+                        {
+                            var cn = document.getElementById(req[i]).className;
+                            document.getElementById(req[i]).className = cn.replace("non"," ");
+                        }
+                        document.getElementById(new_val+"2").click();
+                        req=[];
+                        beq=[];
+                        re1=[];
+                        beat=[];
+                    }
+                }
+            }
+            
+            
+            function coin(w,s)																		//function called when a coin is clicked
+            {
+            if(document.getElementById('t3').value === document.getElementById('t4').value)
+            {
+                me = document.getElementById('t4').value;
+            //document.getElementById('t3').value = document.getElementById(w).parentNode.getAttribute('id');
+                if(x===1 && document.getElementById(w).className.indexOf(me)!==-1)
+                    {
+                    pawn = 0;
+                    pawn_compensation = [];
+                    var y = document.getElementById(w).parentNode;
+                        prev_me = y.innerHTML;
+                        prev = y;
+                    if(s === "pawn")																//if a pawn is selected all it's possible moves are calculated
+                    {
+                        pawn = 1;
+                        if(me === "white")
+                        {
+                            move_one_up(w);
+                            move_two_up(w);
+                            beat_one_up_cross(w);
+                        }
+                        else
+                        {
+                            move_one_down(w);
+                            move_two_down(w);
+                            beat_one_down_cross(w);
+                        }
+                    }
+                    else if(s==="rook")																//if a rook is selected all it's possible moves are calculated
+                    {
+                        total_row(w);
+                        total_column(w);
+                    }
+                    else if(s==="knight")															//if a knight is selected
+                    {
+                        total_l(w);
+                    }
+                    else if(s==="bishop")															//if a bishop is selected
+                    {
+                        total_cross_up(w);
+                        total_cross_down(w);
+                    }
+                    else if(s==="king")																//if a king is selected
+                    {
+                        move_one_up(w);
+                        move_one_down(w);
+                        move_one_right(w);
+                        move_one_left(w);
+                        move_one_up_cross(w);
+                        move_one_down_cross(w);
+                        beat_one_up(w);
+                        beat_one_down(w);
+                        beat_one_right(w);
+                        beat_one_left(w);
+                        beat_one_up_cross(w);
+                        beat_one_down_cross(w);
+                    }
+                    else if(s==="queen")															//if a queen is selected
+                    {
+                        total_row(w);
+                        total_column(w);
+                        total_cross_up(w);
+                        total_cross_down(w);
+                    }
+                    if(req.length === 0)
+                    {
+                    }
+                    else
+                    {
+                        for(var i=0;i<req.length;i++)
+                        {
+                            document.getElementById(req[i]).className += " non ";
+                        }
+                        document.getElementById(document.getElementById(w).parentNode.getAttribute('id')+"1").click();
+                        x=2;
+                    }
+                }
+                else if(x === 2)																	//if the beat position is clicked
+                {
+                    var new_val = document.getElementById(w).parentNode.getAttribute('id');
+                    if(beat.indexOf(w) !== -1 && req.indexOf(w) !== -1)
+                    {
+                        if(s === "king")
+                            {
+                                document.getElementById('t7').click();
+                            }
+                        var y = document.getElementById(w).parentNode;
+                        var p = document.getElementById(w);
+                        p.innerHTML="";
+                        p.setAttribute("onclick",'javascript:empty(this.id);');
+                        p.className="";
+                        current_me = y.innerHTML;
+                        y.innerHTML = prev_me;
+                        prev.innerHTML = current_me;
+                        x=1;
+                        for(var i=0;i<req.length;i++)
+                        {
+                            var cn = document.getElementById(req[i]).className;
+                            document.getElementById(req[i]).className = cn.replace("non"," ");
+                        }
+                        document.getElementById(new_val+"2").click();
+                        re1=[];
+                        req=[];
+                        beat=[];
+                        pawn_compensation=[];
+                    }
+                }
+            }
+            }
+            </script>
+        </body>
+        </html>

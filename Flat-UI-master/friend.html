@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flat UI - Free Bootstrap Framework and Theme</title>
+    <meta name="description" content="Flat UI Kit Free is a Twitter Bootstrap Framework design and Theme, this responsive framework includes a PSD and HTML version."/>
+
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="dist/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="dist/css/flat-ui.css" rel="stylesheet">
+    <link href="docs/assets/css/demo.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
+      
+   <link rel="stylesheet" type="text/css" href="bower_components/sweetalert/dist/sweetalert.css">
+    <script type="application/javascript" src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="application/javascript" src="bower_components/angular-sweetalert/dist/ngSweetAlert.js"></script>
+      
+    <script src="create_user.js"></script>
+      
+  </head>
+  <body  ng-app="userDetailApp">
+    <div class="container" ng-controller="friendCtrl">
+
+      <div class="row">
+        <div class="col-xs-3">
+          <h3 class="demo-panel-title">Dropdown</h3>
+
+          <div class="btn-group">
+            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">Default <span class="caret"></span></button>
+            <ul role="menu" class="dropdown-menu">
+                
+              <li ng-repeat="user in availableUsers">
+                  <a ng-click="sendRequest(user)" ng-show="dontShowItself(user)" >{{user.username}}</a>
+                </li>
+              
+            </ul>
+          </div><!-- /btn-group -->
+        </div> <!-- /.col-xs-3 -->
+        
+         <div class="col-xs-3">
+          <a href="#fakelink" class="btn btn-block btn-lg btn-inverse" ng-click="logOut()" >LOG OUT Button</a>
+        </div>
+      </div> <!-- /.row -->
+
+      
+
+    <script src="dist/js/vendor/jquery.min.js"></script>
+    <script src="dist/js/vendor/video.js"></script>
+    <script src="dist/js/flat-ui.min.js"></script>
+    <script src="docs/assets/js/application.js"></script>
+
+    <script>
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
+    </script>
+  </body>
+</html>
